@@ -337,8 +337,8 @@ Transform:
   m_GameObject: {fileID: 416528871}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3227, y: 7.065, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalPosition: {x: -0.3227, y: 6.61, z: 0}
+  m_LocalScale: {x: 3.6684377, y: 3.6450002, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1997464550}
@@ -1644,8 +1644,8 @@ Transform:
   m_GameObject: {fileID: 2056857043}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0979, y: -5.93, z: 0}
-  m_LocalScale: {x: 1.8674204, y: 1.7737759, z: 1}
+  m_LocalPosition: {x: -0.0979, y: -5.9, z: 0}
+  m_LocalScale: {x: 2.0852554, y: 1.9653909, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 10864473}
@@ -1724,18 +1724,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2056857049
-MonoBehaviour:
+--- !u!95 &2056857049
+Animator:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2056857043}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b003963f40bb9944781976ad95ad1b43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 203af5af89314a44f9f438a2d11b3373, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2080339463
 GameObject:
   m_ObjectHideFlags: 0
