@@ -6,27 +6,17 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     public GameObject reflectShield;
     public Slider reflectionBar;
-    public Slider healthBar; // Health bar for the player
-    public int maxHealth = 5; // Set max health to 5
     public float reflectionForceMultiplier = 2f;
+    public float borderDamageRate = 1f; // Damage per second when near the border
 
-    private int currentHealth;
     private int reflectionCount = 0;
+    private bool isNearBorder = false;
+    private float borderDamageTimer = 0f;
+    private Animator animator;
 
     void Start()
     {
-        currentHealth = maxHealth;
-
-        // Ensure healthBar is assigned
-        if (healthBar != null)
-        {
-            healthBar.maxValue = maxHealth; // Initialize health bar max value
-            healthBar.value = currentHealth; // Initialize health bar current value
-        }
-        else
-        {
-            Debug.LogError("Health bar is not assigned in the Inspector.");
-        }
+        animator = GetComponent<Animator>();
 
         // Ensure reflectionBar is assigned
         if (reflectionBar != null)
@@ -42,34 +32,52 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.currentHealth <= 0)
+        {
+            this.enabled = false; // Disable player movement
+            Debug.Log("Player eliminated");
+            return;
+        }
+
         float move = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
         transform.Translate(move, 0, 0);
+
+        // Update animations
+        if (move != 0)
+        {
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            animator.SetBool("isWalking", false);
+        }
 
         if (Input.GetButtonDown("Jump"))
         {
             ReflectProjectiles();
         }
-    }
 
-    public void TakeDamage(int amount)
-    {
-        currentHealth -= amount;
-
-        if (healthBar != null)
+        // Apply border damage if near the border
+        if (isNearBorder)
         {
-            healthBar.value = currentHealth; // Update health bar
+            borderDamageTimer += Time.deltaTime;
+            if (borderDamageTimer >= 1f / borderDamageRate)
+            {
+                GameManager.Instance.TakeDamage(1);
+                animator.SetTrigger("TakeDamage");
+                borderDamageTimer = 0f;
+            }
         }
-
-        if (currentHealth <= 0)
+        else
         {
-            // Handle player death
-            gameObject.SetActive(false);
-            Debug.Log("Player eliminated");
+            borderDamageTimer = 0f;
         }
     }
 
     void ReflectProjectiles()
     {
+        animator.SetTrigger("Reflect");
+
         if (reflectShield == null) return;
 
         Collider2D[] projectiles = Physics2D.OverlapBoxAll(reflectShield.transform.position, reflectShield.transform.localScale, 0);
@@ -102,6 +110,32 @@ public class PlayerMovement : MonoBehaviour
                     Destroy(col.gameObject, 2f); // Destroy projectile after 2 seconds
                 }
             }
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Border"))
+        {
+            isNearBorder = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Border"))
+        {
+            isNearBorder = false;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            GameManager.Instance.TakeDamage(1);
+            animator.SetTrigger("TakeDamage");
+            Destroy(collision.gameObject);
         }
     }
 }

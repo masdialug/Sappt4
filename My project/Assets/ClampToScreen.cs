@@ -11,7 +11,7 @@ public class ClampToScreen : MonoBehaviour
 
         // Calculate the screen boundaries in world coordinates
         Vector3 lowerLeftCorner = mainCamera.ScreenToWorldPoint(Vector3.zero);
-        Vector3 upperRightCorner = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height));
+        Vector3 upperRightCorner = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
 
         minX = lowerLeftCorner.x;
         maxX = upperRightCorner.x;

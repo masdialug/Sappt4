@@ -24,6 +24,11 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.currentHealth <= 0)
+        {
+            return; // Stop updating if the player is dead
+        }
+
         // Move towards target position horizontally
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
@@ -49,6 +54,11 @@ public class EnemyAI : MonoBehaviour
 
     void FireProjectile()
     {
+        if (GameManager.Instance.currentHealth <= 0)
+        {
+            return; // Stop firing if the player is dead
+        }
+
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
 
         if (projectile != null)
@@ -61,7 +71,7 @@ public class EnemyAI : MonoBehaviour
             projectile.transform.localScale = new Vector3(playerScale.x * 2f / 3f, playerScale.y * 2f / 3f, playerScale.z);
 
             Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-            Vector2 direction = ((Vector2)(player.position - firePoint.position)).normalized + Vector2.down;
+            Vector2 direction = ((Vector2)(player.position - firePoint.position)).normalized;
             rb.velocity = direction * projectileSpeed;
             Destroy(projectile, 5f); // Destroy projectile after 5 seconds
         }
