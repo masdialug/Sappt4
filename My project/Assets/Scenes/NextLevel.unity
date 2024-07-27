@@ -477,8 +477,8 @@ Transform:
   m_GameObject: {fileID: 322008956}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.2898, y: -5.7772, z: 0}
-  m_LocalScale: {x: 23.784214, y: 3.5248456, z: 1}
+  m_LocalPosition: {x: -1.1372, y: -5.9976, z: 0}
+  m_LocalScale: {x: 23.479776, y: 3.0838873, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1556,6 +1556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
+  jumpForce: 5
   reflectShield: {fileID: 1479846657}
   reflectionBar: {fileID: 444289995}
   reflectionForceMultiplier: 3
@@ -1569,7 +1570,7 @@ Transform:
   m_GameObject: {fileID: 1181650809}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.226, y: -3.125, z: 0}
+  m_LocalPosition: {x: -0.34, y: -3.7, z: 0}
   m_LocalScale: {x: 1.5734885, y: 1.5348483, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

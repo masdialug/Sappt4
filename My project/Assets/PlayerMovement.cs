@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public float jumpForce = 5f; // Add jump force for reflecting
     public GameObject reflectShield;
     public Slider reflectionBar;
     public float reflectionForceMultiplier = 2f;
@@ -13,10 +14,12 @@ public class PlayerMovement : MonoBehaviour
     private bool isNearBorder = false;
     private float borderDamageTimer = 0f;
     private Animator animator;
+    private Rigidbody2D rb; // Add a reference to the Rigidbody2D
 
     void Start()
     {
         animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>(); // Initialize the Rigidbody2D
 
         // Ensure reflectionBar is assigned
         if (reflectionBar != null)
@@ -35,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         if (GameManager.Instance.currentHealth <= 0)
         {
             this.enabled = false; // Disable player movement
+            animator.SetTrigger("Die"); // Trigger death animation
             Debug.Log("Player eliminated");
             return;
         }
@@ -43,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         transform.Translate(move, 0, 0);
 
         // Update animations
-        if (Mathf.Abs(move) > 0.01f)
+        if (Mathf.Abs(move) > 0.01f) // Small threshold to prevent idle flicker
         {
             animator.SetBool("isWalking", true);
         }
@@ -77,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
     void ReflectProjectiles()
     {
         animator.SetTrigger("Reflect");
+        rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse); // Add jump force
 
         if (reflectShield == null) return;
 
