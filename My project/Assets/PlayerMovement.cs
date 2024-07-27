@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
         transform.Translate(move, 0, 0);
 
         // Update animations
-        if (move != 0)
+        if (Mathf.Abs(move) > 0.01f)
         {
             animator.SetBool("isWalking", true);
         }
