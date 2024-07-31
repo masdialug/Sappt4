@@ -14,22 +14,27 @@ public class PlayerMovement : MonoBehaviour
     private bool isNearBorder = false;
     private float borderDamageTimer = 0f;
     private Animator animator;
-    private Rigidbody2D rb; // Add a reference to the Rigidbody2D
+    private Rigidbody2D rb;
+    private bool isReflecting = false; // Flag to indicate if the player is reflecting
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>(); // Initialize the Rigidbody2D
+        rb = GetComponent<Rigidbody2D>();
 
-        // Ensure reflectionBar is assigned
-        if (reflectionBar != null)
+        if (reflectShield == null)
         {
-            reflectionBar.maxValue = 7; // Set max value for reflection bar
-            reflectionBar.value = reflectionCount; // Initialize reflection bar value
+            Debug.LogError("ReflectShield is not assigned in the Inspector.");
+        }
+
+        if (reflectionBar == null)
+        {
+            Debug.LogError("ReflectionBar is not assigned in the Inspector.");
         }
         else
         {
-            Debug.LogError("Reflection bar is not assigned in the Inspector.");
+            reflectionBar.maxValue = 7;
+            reflectionBar.value = reflectionCount;
         }
     }
 
@@ -58,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            ReflectProjectiles();
+            StartReflecting();
         }
 
         // Apply border damage if near the border
@@ -78,12 +83,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void ReflectProjectiles()
+    void StartReflecting()
     {
         animator.SetTrigger("Reflect");
         rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse); // Add jump force
+        isReflecting = true;
+        Invoke("StopReflecting", animator.GetCurrentAnimatorStateInfo(0).length); // Stop reflecting when the animation ends
+    }
 
-        if (reflectShield == null) return;
+    void StopReflecting()
+    {
+        isReflecting = false;
+    }
+
+    void ReflectProjectiles()
+    {
+        if (!isReflecting || reflectShield == null) return;
 
         Collider2D[] projectiles = Physics2D.OverlapBoxAll(reflectShield.transform.position, reflectShield.transform.localScale, 0);
 
@@ -141,6 +156,14 @@ public class PlayerMovement : MonoBehaviour
             GameManager.Instance.TakeDamage(1);
             animator.SetTrigger("TakeDamage");
             Destroy(collision.gameObject);
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (isReflecting)
+        {
+            ReflectProjectiles();
         }
     }
 }

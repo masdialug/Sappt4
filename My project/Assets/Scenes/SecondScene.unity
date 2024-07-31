@@ -2010,8 +2010,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7ad8f2c2f43c244a834315b712f1c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 10
   maxHealth: 10
+  currentHealth: 10
+  healthBar: {fileID: 1102075361}
 --- !u!4 &1837856353
 Transform:
   m_ObjectHideFlags: 0
