@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 587338169}
   m_Layer: 0
   m_Name: RightBorder
-  m_TagString: Border
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -705,8 +705,8 @@ Transform:
   m_GameObject: {fileID: 587338168}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.54, y: -8.2, z: 0}
-  m_LocalScale: {x: 2.4609375, y: 9.275156, z: 1}
+  m_LocalPosition: {x: 22.89, y: -8.2, z: 0}
+  m_LocalScale: {x: 2.4609375, y: 59.361, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -831,7 +831,7 @@ GameObject:
   - component: {fileID: 722940270}
   m_Layer: 0
   m_Name: LeftBorder
-  m_TagString: Border
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -890,8 +890,8 @@ Transform:
   m_GameObject: {fileID: 722940269}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.52, y: -8.01, z: 0}
-  m_LocalScale: {x: 2, y: 9, z: 1}
+  m_LocalPosition: {x: -22.65, y: -8.01, z: 0}
+  m_LocalScale: {x: 2, y: 50.0625, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1495,12 +1495,14 @@ MonoBehaviour:
   player: {fileID: 2041357596}
   moveSpeed: 12
   projectilePrefab: {fileID: 1965206862520080965, guid: 5f18c1b3d0e33ce499cca8bc5cba7b44, type: 3}
+  buttonProjectilePrefab: {fileID: 1386265348665305141, guid: abf03a3dc26b4c0469ede5c38c35076f, type: 3}
   firePoint: {fileID: 679183673}
-  projectileSpeed: 10
-  fireRate: 1.5
-  moveRangeX: 25
-  maxHits: 12
-  nextSceneName: Level1
+  projectileSpeed: 11
+  fireRate: 1.2
+  buttonProjectileCooldown: 6
+  moveRangeX: 19
+  maxHits: 6
+  nextSceneName: ThirdScene
 --- !u!4 &1323450972
 Transform:
   m_ObjectHideFlags: 0
@@ -1797,9 +1799,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7ad8f2c2f43c244a834315b712f1c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHealth: 10
   maxHealth: 10
-  currentHealth: 0
-  healthBar: {fileID: 339646833}
 --- !u!4 &1649185373
 Transform:
   m_ObjectHideFlags: 0
@@ -2035,6 +2036,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  jumpForce: 5
   reflectShield: {fileID: 708823566}
   reflectionBar: {fileID: 1088095419}
   reflectionForceMultiplier: 3

@@ -6,15 +6,18 @@ public class EnemyAI : MonoBehaviour
     public Transform player;
     public float moveSpeed = 2f;
     public GameObject projectilePrefab;
+    public GameObject buttonProjectilePrefab; // Reference to the button projectile prefab
     public Transform firePoint;
     public float projectileSpeed = 5f;
     public float fireRate = 2f;
+    public float buttonProjectileCooldown = 6f; // Cooldown for the button projectile
     public float moveRangeX = 8f; // Range for random horizontal movement
     public int maxHits = 12; // Max hits before the enemy dies
     public string nextSceneName; // Name of the next scene to load after four hits
 
     private int hitCount = 0; // Counter for hits by reflected projectiles
     private float nextFireTime = 0f;
+    private float nextButtonProjectileTime = 0f;
     private Vector2 targetPosition;
 
     void Start()
@@ -38,11 +41,18 @@ public class EnemyAI : MonoBehaviour
             SetRandomTargetPosition();
         }
 
-        // Fire projectile at intervals
+        // Fire regular projectiles at intervals
         if (Time.time > nextFireTime)
         {
             FireProjectile();
             nextFireTime = Time.time + 1f / fireRate;
+        }
+
+        // Fire button projectiles at intervals only in the second and third scenes
+        if ((SceneManager.GetActiveScene().name == "SecondScene" || SceneManager.GetActiveScene().name == "ThirdScene") && Time.time > nextButtonProjectileTime)
+        {
+            FireButtonProjectile();
+            nextButtonProjectileTime = Time.time + buttonProjectileCooldown;
         }
     }
 
@@ -54,11 +64,6 @@ public class EnemyAI : MonoBehaviour
 
     void FireProjectile()
     {
-        if (GameManager.Instance.currentHealth <= 0)
-        {
-            return; // Stop firing if the player is dead
-        }
-
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
 
         if (projectile != null)
@@ -74,6 +79,23 @@ public class EnemyAI : MonoBehaviour
             Vector2 direction = ((Vector2)(player.position - firePoint.position)).normalized;
             rb.velocity = direction * projectileSpeed;
             Destroy(projectile, 5f); // Destroy projectile after 5 seconds
+        }
+    }
+
+    void FireButtonProjectile()
+    {
+        GameObject buttonProjectile = Instantiate(buttonProjectilePrefab, firePoint.position, firePoint.rotation);
+
+        if (buttonProjectile != null)
+        {
+            // Set the initial scale of the button projectile to (1, 1, 1)
+            buttonProjectile.transform.localScale = new Vector3(1f, 1f, 1f);
+
+            Rigidbody2D rb = buttonProjectile.GetComponent<Rigidbody2D>();
+            Vector2 direction = Vector2.down + Vector2.right;
+            rb.velocity = direction.normalized * projectileSpeed;
+            ButtonProjectile buttonProjScript = buttonProjectile.GetComponent<ButtonProjectile>();
+            buttonProjScript.SetUp(16); // Set up with max bounces and any other necessary parameters
         }
     }
 

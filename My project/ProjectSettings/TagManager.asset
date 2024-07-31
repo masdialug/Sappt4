@@ -8,6 +8,9 @@ TagManager:
   - Ground
   - Enemy
   - Border
+  - ButtonProjectile
+  - wall
+  - Wall
   layers:
   - Default
   - TransparentFX

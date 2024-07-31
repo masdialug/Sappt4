@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 228124156}
   m_Layer: 0
   m_Name: LeftBorder
-  m_TagString: Border
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -347,8 +347,8 @@ Transform:
   m_GameObject: {fileID: 228124155}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.97, y: -2.31, z: 0}
-  m_LocalScale: {x: 2, y: 9, z: 1}
+  m_LocalPosition: {x: -10.99, y: -2.31, z: 0}
+  m_LocalScale: {x: 2, y: 27.5625, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -837,12 +837,14 @@ MonoBehaviour:
   player: {fileID: 1181650815}
   moveSpeed: 6
   projectilePrefab: {fileID: 1965206862520080965, guid: 5f18c1b3d0e33ce499cca8bc5cba7b44, type: 3}
+  buttonProjectilePrefab: {fileID: 1386265348665305141, guid: abf03a3dc26b4c0469ede5c38c35076f, type: 3}
   firePoint: {fileID: 1294668315}
   projectileSpeed: 7
   fireRate: 1.2
-  moveRangeX: 9
-  maxHits: 12
-  nextSceneName: LastLevel
+  buttonProjectileCooldown: 6
+  moveRangeX: 5.79
+  maxHits: 6
+  nextSceneName: ThirdScene
 --- !u!4 &508021018
 Transform:
   m_ObjectHideFlags: 0
@@ -871,7 +873,7 @@ GameObject:
   - component: {fileID: 541620767}
   m_Layer: 0
   m_Name: RightBorder
-  m_TagString: Border
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -930,8 +932,8 @@ Transform:
   m_GameObject: {fileID: 541620766}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.07, y: -2.79, z: 0}
-  m_LocalScale: {x: 2.4609375, y: 9.275156, z: 1}
+  m_LocalPosition: {x: 11.26, y: -2.79, z: 0}
+  m_LocalScale: {x: 2.4609375, y: 29.33268, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2008,9 +2010,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7ad8f2c2f43c244a834315b712f1c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHealth: 10
   maxHealth: 10
-  currentHealth: 0
-  healthBar: {fileID: 1102075361}
 --- !u!4 &1837856353
 Transform:
   m_ObjectHideFlags: 0
