@@ -88,8 +88,9 @@ public class EnemyAI : MonoBehaviour
 
         if (buttonProjectile != null)
         {
-            // Set the initial scale of the button projectile to (1, 1, 1)
-            buttonProjectile.transform.localScale = new Vector3(1f, 1f, 1f);
+            // Adjust the size of the button projectile to be similar to the player
+            Vector3 playerScale = player.localScale;
+            buttonProjectile.transform.localScale = new Vector3(playerScale.x * 0.8f, playerScale.y * 0.8f, playerScale.z);
 
             Rigidbody2D rb = buttonProjectile.GetComponent<Rigidbody2D>();
             Vector2 direction = Vector2.down + Vector2.right;

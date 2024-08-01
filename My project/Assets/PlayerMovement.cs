@@ -9,13 +9,17 @@ public class PlayerMovement : MonoBehaviour
     public Slider reflectionBar;
     public float reflectionForceMultiplier = 2f;
     public float borderDamageRate = 1f; // Damage per second when near the border
+    public int maxReflections = 7; // Maximum number of reflections
+    public float reflectionCooldown = 5f; // Cooldown duration in seconds
 
-    private int reflectionCount = 0;
+    private int currentReflections;
     private bool isNearBorder = false;
     private float borderDamageTimer = 0f;
     private Animator animator;
     private Rigidbody2D rb;
     private bool isReflecting = false; // Flag to indicate if the player is reflecting
+    private bool inCooldown = false; // Flag to indicate if the player is in cooldown
+    private float cooldownTimer = 0f; // Timer for cooldown
 
     void Start()
     {
@@ -33,8 +37,9 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            reflectionBar.maxValue = 7;
-            reflectionBar.value = reflectionCount;
+            reflectionBar.maxValue = maxReflections;
+            currentReflections = maxReflections;
+            reflectionBar.value = currentReflections;
         }
     }
 
@@ -61,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("isWalking", false);
         }
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && !inCooldown && currentReflections > 0)
         {
             StartReflecting();
         }
@@ -81,6 +86,16 @@ public class PlayerMovement : MonoBehaviour
         {
             borderDamageTimer = 0f;
         }
+
+        // Handle cooldown
+        if (inCooldown)
+        {
+            cooldownTimer += Time.deltaTime;
+            if (cooldownTimer >= reflectionCooldown)
+            {
+                EndCooldown();
+            }
+        }
     }
 
     void StartReflecting()
@@ -88,12 +103,33 @@ public class PlayerMovement : MonoBehaviour
         animator.SetTrigger("Reflect");
         rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse); // Add jump force
         isReflecting = true;
+        currentReflections--;
+        reflectionBar.value = currentReflections;
         Invoke("StopReflecting", animator.GetCurrentAnimatorStateInfo(0).length); // Stop reflecting when the animation ends
+
+        if (currentReflections <= 0)
+        {
+            StartCooldown();
+        }
     }
 
     void StopReflecting()
     {
         isReflecting = false;
+    }
+
+    void StartCooldown()
+    {
+        inCooldown = true;
+        cooldownTimer = 0f;
+        reflectionBar.value = 0;
+    }
+
+    void EndCooldown()
+    {
+        inCooldown = false;
+        currentReflections = maxReflections;
+        reflectionBar.value = currentReflections;
     }
 
     void ReflectProjectiles()
@@ -111,24 +147,8 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Vector2 reflectionDirection = ((Vector2)(col.transform.position - transform.position)).normalized;
                     rb.velocity = reflectionDirection * rb.velocity.magnitude * reflectionForceMultiplier; // Stronger reflection force
-                    reflectionCount++;
-
-                    if (reflectionBar != null)
-                    {
-                        reflectionBar.value = reflectionCount; // Update reflection bar
-                    }
-
-                    if (reflectionCount >= 7)
-                    {
-                        reflectionCount = 0;
-                        if (reflectionBar != null)
-                        {
-                            reflectionBar.value = 0;
-                        }
-                    }
-
-                    Destroy(col.gameObject, 2f); // Destroy projectile after 2 seconds
                 }
+                Destroy(col.gameObject, 2f); // Destroy projectile after 2 seconds
             }
         }
     }
